@@ -42,6 +42,8 @@ def get_database_connection():
 @st.cache_data(ttl=3600)
 def get_categories():
     """Fetch all categories for dropdown filter"""
+    # FIX: Get the engine explicitly
+    engine = get_database_connection()
     query = "SELECT category_name FROM categories ORDER BY category_name"
     df = pd.read_sql(query, engine)
     return ['All Categories'] + df['category_name'].tolist()
@@ -49,6 +51,8 @@ def get_categories():
 @st.cache_data(ttl=3600)
 def get_allergens():
     """Fetch all allergens for checkbox filter"""
+    # FIX: Get the engine explicitly
+    engine = get_database_connection()
     query = "SELECT allergen_id, name FROM allergens ORDER BY name"
     df = pd.read_sql(query, engine)
     return df
@@ -56,12 +60,17 @@ def get_allergens():
 @st.cache_data(ttl=3600)
 def get_diet_labels():
     """Fetch all diet labels for filter"""
+    # FIX: Get the engine explicitly
+    engine = get_database_connection()
     query = "SELECT label_id, label_name FROM diet_labels ORDER BY label_name"
     df = pd.read_sql(query, engine)
     return df
 
-def search_recipes(cal_min, cal_max, carb_target, fat_target, prot_target, margin, 
-                   category, exclude_allergen_ids, diet_label_ids):
+def search_recipes(cal_min, cal_max, carb_target, fat_target, prot_target, margin, category, exclude_allergen_ids, diet_label_ids):
+    """Query recipes based on user filters"""
+    # FIX: Get the engine explicitly
+    engine = get_database_connection()
+
     """Query recipes based on user filters"""
     
     # Allergen exclusion clause
